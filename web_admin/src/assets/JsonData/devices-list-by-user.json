@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "name": "Nguyễn Trường Giang",
+    "installationDate": "20/1/2013",
+    "room": "Phòng ngủ",
+    "description": "Tivi phòng ngủ",
+    "note": "lắp mới",
+    "status": "false"
+  },
+  {
+    "id": 2,
+    "name": "Nguyễn Trường Giang",
+    "installationDate": "20/1/2013",
+    "room": "Phòng ngủ",
+    "description": "đèn phòng ngủ",
+    "note": "lắp mới",
+    "status": "true"
+  },
+  {
+    "id": 3,
+    "name": "Finlay Baylay",
+    "installationDate": "20/1/2013",
+    "room": "Phòng khách",
+    "description": "Tivi phòng ngủ",
+    "note": "lắp mới",
+    "status": "true"
+  },
+  {
+    "id": 4,
+    "name": "Nguyễn Trường Giang",
+
+    "installationDate": "20/1/2013",
+    "room": "Phòng khách",
+    "description": "Tivi phòng ngủ",
+    "note": "lắp mới",
+    "status": "false"
+  },
+  {
+    "id": 5,
+    "name": "Nguyễn Trường Giang",
+    "installationDate": "20/1/2013",
+    "room": "Phòng khách",
+    "description": "Tivi phòng ngủ",
+    "note": "lắp mới",
+    "status": "false"
+  }
+]

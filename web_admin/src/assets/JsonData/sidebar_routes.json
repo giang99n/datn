@@ -1,0 +1,17 @@
+[
+    {
+        "display_name": "Dashboard",
+        "route": "/",
+        "icon": "bx bx-category-alt"
+    },
+    {
+        "display_name": "Users",
+        "route": "/customers",
+        "icon": "bx bx-user-pin"
+    },
+    {
+        "display_name": "Devices",
+        "route": "/devices",
+        "icon": "bx bx-package"
+    }
+]

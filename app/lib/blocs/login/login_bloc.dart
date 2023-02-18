@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:iot_demo/network/apis.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../datasource/network/apis.dart';
 
 part 'login_events.dart';
 part 'login_state.dart';
@@ -19,19 +21,19 @@ class LoginBloc extends Bloc<LoginEvents, LoginState> {
       yield LoginInitState();
     } else if (event is LoginButtonPressed) {
       yield LoginLoadingState();
-      print(event.email);
-      print(event.password);
+      //yield LoginSuccessState();
       var data = await apiRepository.login(event.email, event.password);
 
-        if(data?.user!=null){
-          pref.setString('token', data!.accessToken.toString());
-          pref.setString('userId', data.user!.id.toString());
-          yield LoginSuccessState();
-        }else if(data?.message !=null){
-          LoginErrorState(
-              message:data?.message ?? "đăng nhập thất bại");
-        }
-
+      if (data?.user != null) {
+        pref.setString('token', data!.accessToken.toString());
+        pref.setString('userId', data.user!.id.toString());
+        pref.setString('email', data.user!.email.toString());
+        yield LoginSuccessState();
+      } else if (data?.message != null) {
+        yield LoginErrorState(message: data?.message ?? "đăng nhập thất bại");
+      } else {
+        yield LoginErrorState(message: "đăng nhập thất bại");
+      }
     }
   }
 }

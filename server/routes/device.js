@@ -6,7 +6,8 @@ const moment = require('moment');
 // router.get('/', auth(['customer', 'admin']), async (req, res) => {
 router.get('/listDevice', async (req, res) => {
     try {
-        Device.find({deviceOwner: req.query.email}, function(err, devices) {
+        let emailConvert = req.query.email.replace('%40','@');
+        Device.find({deviceOwner: [req.query.email, emailConvert]}, function(err, devices) {
             return res.status(200).json({
                 devices,
             });
@@ -16,6 +17,7 @@ router.get('/listDevice', async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 });
+
 
 router.get('/deviceRequestFix', async (req, res) => {
     try {
