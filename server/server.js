@@ -14,9 +14,7 @@ const accountSid = "ACf7576834793c6a73350507af5fc4c341";
 const authToken = "9d5fb086575622a24f62296b6a436de5";
 const clientsms = require("twilio")(accountSid, authToken);
 
-// clientsms.messages
-//   .create({ body: "Phat hien khi gas, hay kiem tra", from: "+13156108151", to: "+84868349331" })
-//   .then(message => console.log(message.sid));
+
 
 const options = {
 	host: 'broker.hivemq.com',
@@ -51,12 +49,20 @@ db.once('open', () => {
 			let content = JSON.parse(message.toString());
 			console.log("content" + content);
 
+			if(content.gasVal>600){
+				clientsms.messages
+  					.create({ body: "Phat hien khi gas, hay kiem tra", from: "+13156108151", to: "+84868349331" })
+  					.then(message => console.log(message.sid));
+			}
+
 			//Save to db
 			//Create a new Sensor
 			const sensor = new Sensor({
 				humidityAir: content.humidityAir,
 				temperature: content.temperature,
+				gasVal: content.gasVal,
 			});
+			
 			const savedSensor = await sensor.save();
 			console.log('[Saved DB] =>', savedSensor);
 		} catch (err) {

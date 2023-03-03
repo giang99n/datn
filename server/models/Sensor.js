@@ -9,6 +9,10 @@ const sensorSchema = new mongoose.Schema({
 		type: Number,
 		required: true,
 	},
+	gasVal: {
+		type: Number,
+		required: true,
+	},
 	createdDate: {
 		type: Date,
 		default: Date.now,
