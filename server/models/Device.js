@@ -4,7 +4,10 @@ const userSchema = new mongoose.Schema({
 	name: {
 		type: String,
 		required: true,
-
+	},
+	userId: {
+		type: String,
+		required: true,
 	},
 	deviceOwner: {
 		type: String,
@@ -12,6 +15,12 @@ const userSchema = new mongoose.Schema({
 	},
     description:{
 		type: String,
+		
+		required: true,
+	},
+	room:{
+		type: String,
+		enum: ['living-room', 'kitchen','bathroom','bedroom'],
 		required: true,
 	},
 	note:{
@@ -23,6 +32,15 @@ const userSchema = new mongoose.Schema({
 	},
 	status:{
 		type: Boolean,
+		default: false,
+	},
+	statusRequest:{
+		type: Boolean,
+		default: true,
+	},
+	isControl:{
+		type: Boolean,
+		default: true,
 	},
 
 });

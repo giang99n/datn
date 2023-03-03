@@ -1,25 +1,27 @@
 [
   {
     "id": 1,
-    "name": "Nguyễn Trường Giang",
+    "name": "Brittan Rois",
     "installationDate": "20/1/2013",
-    "room": "Phòng ngủ",
+    "room": "Phòng khách",
     "description": "Tivi phòng ngủ",
     "note": "lắp mới",
     "status": "false"
   },
   {
     "id": 2,
-    "name": "Nguyễn Trường Giang",
+    "name": "Matthew Junifer",
+
     "installationDate": "20/1/2013",
-    "room": "Phòng ngủ",
-    "description": "đèn phòng ngủ",
+    "room": "Phòng khách",
+    "description": "Tivi phòng ngủ",
     "note": "lắp mới",
     "status": "true"
   },
   {
     "id": 3,
     "name": "Finlay Baylay",
+
     "installationDate": "20/1/2013",
     "room": "Phòng khách",
     "description": "Tivi phòng ngủ",
@@ -28,7 +30,7 @@
   },
   {
     "id": 4,
-    "name": "Nguyễn Trường Giang",
+    "name": "Beryle Monelli",
 
     "installationDate": "20/1/2013",
     "room": "Phòng khách",
@@ -38,7 +40,7 @@
   },
   {
     "id": 5,
-    "name": "Nguyễn Trường Giang",
+    "name": "Ilario Shoppee",
     "installationDate": "20/1/2013",
     "room": "Phòng khách",
     "description": "Tivi phòng ngủ",

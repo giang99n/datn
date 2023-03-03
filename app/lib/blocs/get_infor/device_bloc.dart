@@ -17,16 +17,24 @@ class DeviceBloc extends Bloc<DeviceEvents, DeviceState> {
     final apiRepository = Api();
     final pref = await SharedPreferences.getInstance();
     String token = (pref.getString('token') ?? "");
-    String email = (pref.getString('email') ?? "");
+    String userId = (pref.getString('userId') ?? "");
     if (event is StartEvent) {
       yield DeviceInitState();
     } else if (event is DeviceEventStated) {
       yield DeviceLoadingState();
-      var data = await apiRepository.getDevice(token,email);
+      var data = await apiRepository.getDevice(token,userId);
       if (data != null) {
           yield GetDeviceLoadedState(listDevice: data);
       } else {
         yield GetDeviceErrorState();
+      }
+    }else if(event is  DeviceReportPressed){
+      yield DeviceReportLoadingState();
+      var data = await apiRepository.updateDevice(event.id,event.note);
+      if (data != null) {
+        yield DeviceReportSuccessState();
+      } else {
+        yield DeviceReportErrorState(message: 'Error');
       }
     }
   }

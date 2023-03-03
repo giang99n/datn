@@ -7,7 +7,14 @@ abstract class DeviceEvents extends Equatable {
 
 class StartEvent extends DeviceEvents {}
 
-class DeviceEventStated extends DeviceEvents {
-  // final String token;
-  // ProfileEventStated({required this.token});
+class DeviceEventStated extends DeviceEvents {}
+
+
+class DeviceReportPressed extends DeviceEvents {
+  final String id;
+  final String note;
+  DeviceReportPressed( {
+    required this.id,
+    required this.note,
+  });
 }

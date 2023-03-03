@@ -19,3 +19,12 @@ class ProFileLoadedState extends ProFileState {
   @override
   List<Object> get props => [listProfile];
 }
+class ChangeProfileLoadingState extends ProFileState {}
+
+class ChangeProFileSuccessState extends ProFileState {}
+
+class ChangeProFileErrorState extends ProFileState {
+  final String message;
+  ChangeProFileErrorState({required this.message});
+}
+

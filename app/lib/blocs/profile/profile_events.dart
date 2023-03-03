@@ -11,3 +11,14 @@ class ProFileEventStated extends ProFileEvents {
   // final String token;
   // ProfileEventStated({required this.token});
 }
+class ChangeProfilePressed extends ProFileEvents {
+  final String name;
+  final String phone;
+  final String address;
+
+  ChangeProfilePressed({
+    required this.name,
+    required this.phone,
+    required this.address,
+  });
+}

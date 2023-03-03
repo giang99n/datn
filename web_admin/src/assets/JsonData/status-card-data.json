@@ -1,18 +1,17 @@
 [
-
+  {
+    "icon": "bx bx-user-pin",
+    "count": "5",
+    "title": "khách hàng"
+  },
   {
     "icon": "bx bx-package",
     "count": "10",
-    "title": "Thiết bị đã lắp đặt"
-  },
-  {
-    "icon": "bx bx-user-pin",
-    "count": "3",
-    "title": "Khách hàng"
+    "title": " thiết bị"
   },
   {
     "icon": "bx bx-package",
-    "count": "3",
-    "title": "Yêu cầu sửa thiết bị lỗi"
+    "count": "10",
+    "title": " thiết bị lỗi"
   }
 ]

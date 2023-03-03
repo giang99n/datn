@@ -1,25 +1,28 @@
 [
   {
     "id": 1,
-    "name": "Nguyễn Trường Giang",
+    "name": "Brittan Rois",
+    "deviceOwner": "brois0@unicef.org",
     "installationDate": "20/1/2013",
-    "room": "Phòng ngủ",
+    "room": "Phòng khách",
     "description": "Tivi phòng ngủ",
     "note": "lắp mới",
     "status": "false"
   },
   {
     "id": 2,
-    "name": "Nguyễn Trường Giang",
+    "name": "Matthew Junifer",
+    "deviceOwner": "mjunifer1@buzzfeed.com",
     "installationDate": "20/1/2013",
-    "room": "Phòng ngủ",
-    "description": "đèn phòng ngủ",
+    "room": "Phòng khách",
+    "description": "Tivi phòng ngủ",
     "note": "lắp mới",
     "status": "true"
   },
   {
     "id": 3,
     "name": "Finlay Baylay",
+    "deviceOwner": "fbaylay2@purevolume.com",
     "installationDate": "20/1/2013",
     "room": "Phòng khách",
     "description": "Tivi phòng ngủ",
@@ -28,8 +31,8 @@
   },
   {
     "id": 4,
-    "name": "Nguyễn Trường Giang",
-
+    "name": "Beryle Monelli",
+    "deviceOwner": "bmonelli3@amazonaws.com",
     "installationDate": "20/1/2013",
     "room": "Phòng khách",
     "description": "Tivi phòng ngủ",
@@ -38,11 +41,12 @@
   },
   {
     "id": 5,
-    "name": "Nguyễn Trường Giang",
+    "name": "Ilario Shoppee",
+    "deviceOwner": "ishoppee4@webmd.com",
     "installationDate": "20/1/2013",
     "room": "Phòng khách",
     "description": "Tivi phòng ngủ",
-    "note": "bật không lên",
+    "note": "lắp mới",
     "status": "false"
   }
 ]

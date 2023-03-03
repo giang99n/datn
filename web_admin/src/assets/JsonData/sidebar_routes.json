@@ -10,8 +10,13 @@
         "icon": "bx bx-user-pin"
     },
     {
-        "display_name": "Devices",
-        "route": "/devices",
+        "display_name": "Requests",
+        "route": "/requests",
+        "icon": "bx bx-package"
+    },
+    {
+        "display_name": "Reports",
+        "route": "/reports",
         "icon": "bx bx-package"
     }
 ]

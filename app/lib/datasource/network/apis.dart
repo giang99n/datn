@@ -5,11 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../configs/constants.dart';
 import '../models/change_password_res.dart';
+import '../models/device_update_res.dart';
 import '../models/devices_res.dart';
 import '../models/login_res.dart';
 import '../models/sensors_res.dart';
 import '../models/signup_res.dart';
 import '../models/user_res.dart';
+import '../models/user_update_res.dart';
 import 'dio_client.dart';
 
 class Api {
@@ -37,7 +39,6 @@ class Api {
       } else {
         print(e.message);
         return null;
-
       }
     }
     return null;
@@ -68,6 +69,34 @@ class Api {
     return null;
   }
 
+  Future<UserUpdateResponse?> changeProfile(
+      {required String name,
+      required String phone,
+      required String address,
+      required String id}) async {
+    Response response;
+    try {
+      response = await restClient.patch('api/user/update/$id', data: {
+        'name': name,
+        'phone': phone,
+        'location': address,
+      });
+      if (response.statusCode == 200) {
+        return UserUpdateResponse.fromJson(response.data);
+      } else {
+        print('There is some problem status code not 200');
+        return UserUpdateResponse.fromJson(response.data);
+      }
+    } on DioError catch (e) {
+      if (e.response != null) {
+        print(e.response.data.toString());
+      } else {
+        print(e.message);
+      }
+    }
+    return null;
+  }
+
   Future<UserResponse?> getUser(String token, String userId) async {
     Dio dio = Dio();
     // dio.options.headers["Authorization"] = "Bearer $token";
@@ -87,46 +116,14 @@ class Api {
     return null;
   }
 
-  Future<SignupResponse?> Signup(String name, String email, String password,
-      String job, String phoneNumber) async {
-    Response response;
-    try {
-      response = await restClient.post('api/user/create', data: {
-        "name": name,
-        "username": email,
-        "password": password,
-        "job": job,
-        "phone": phoneNumber,
-        "verify": true,
-        "home": {
-          "address": "Tam Giang, Yên Phong, Bắc Ninh",
-          "type": "Point",
-          "coordinates": [108.215028, 16.053509]
-        },
-        "language": "en"
-      });
-      if (response.statusCode == 200) {
-        return SignupResponse.fromJson(response.data);
-      } else {
-        print('There is some problem status code not 200');
-      }
-    } on DioError catch (e) {
-      // BaseResponse br = BaseResponse.fromJson(e.response.data);
-      return SignupResponse.fromJson(e.response.data);
-      // ErrorHandle eh =  ErrorHandle(dioErrorType: e.type, baseResponse: sr );
-      // eh.defaultError();
-    }
-    return null;
-  }
-
-  Future<DeviceResponse?> getDevice(String token, String email) async {
+  Future<DeviceResponse?> getDevice(String token, String userId) async {
     Dio dio = Dio();
     dio.options.headers["Authorization"] = "Bearer $token";
     dio.interceptors.add(PrettyDioLogger());
     Response response;
     try {
       response = await dio.get('${AppConstants.baseUrl}api/device/listDevice',
-          queryParameters: {'email': email});
+          queryParameters: {'userId': userId});
       if (response.statusCode == 200) {
         return DeviceResponse.fromJson(response.data);
       } else {
@@ -138,13 +135,56 @@ class Api {
     return null;
   }
 
+  Future<DeviceUpdateResponse?> updateDevice( String id, String note) async {
+    Dio dio = Dio();
+    final pref = await SharedPreferences.getInstance();
+    String token = (pref.getString('token') ?? "");
+    dio.options.headers["Authorization"] = "Bearer $token";
+    dio.interceptors.add(PrettyDioLogger());
+    Response response;
+    try {
+      response = await dio.patch('${AppConstants.baseUrl}api/device/update/$id',
+          data: {'note': note, 'status': false});
+      if (response.statusCode == 200) {
+        return DeviceUpdateResponse.fromJson(response.data);
+      } else {
+        print('There is some problem status code not 200');
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  Future<DeviceUpdateResponse?> updateStatusDevice( String id, bool status) async {
+    Dio dio = Dio();
+    final pref = await SharedPreferences.getInstance();
+    String token = (pref.getString('token') ?? "");
+    dio.options.headers["Authorization"] = "Bearer $token";
+    dio.interceptors.add(PrettyDioLogger());
+    Response response;
+    try {
+      response = await dio.patch('${AppConstants.baseUrl}api/device/update/$id',
+          data: {'status': status});
+      if (response.statusCode == 200) {
+        return DeviceUpdateResponse.fromJson(response.data);
+      } else {
+        print('There is some problem status code not 200');
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+
   Future<SensorsResponse?> getSensors(String dateBegin, String dateEnd) async {
     Dio dio = Dio();
     //dio.options.headers["Authorization"] = "Bearer $token";
     dio.interceptors.add(PrettyDioLogger());
     Response response;
     try {
-      response = await dio.get('http://192.168.0.102:4000/api/sensor',
+      response = await dio.get('${AppConstants.baseUrl}api/sensor',
           queryParameters: {'begin': dateBegin, 'end': dateEnd});
       if (response.statusCode == 200) {
         print(response.data);

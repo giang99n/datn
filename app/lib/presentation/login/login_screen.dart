@@ -33,9 +33,9 @@ class BodyLogin extends StatefulWidget {
 class _BodyLoginState extends State<BodyLogin> {
   int currentPos = 0;
   final List<String> imageList = [
-    "assets/images/introduce1.jpg",
-    "assets/images/introduce2.png",
-    "assets/images/introduce3.jpg",
+    "assets/images/introduce_3.jpg",
+    "assets/images/introduce_2.png",
+    "assets/images/introduce_1.png",
   ];
 
   TextEditingController email = TextEditingController();
@@ -49,7 +49,7 @@ class _BodyLoginState extends State<BodyLogin> {
   @override
   void initState() {
     loginBloc = BlocProvider.of<LoginBloc>(context);
-    email.text = 'giang123@gmail.com';
+    email.text = 'giang114@gmail.com';
     password.text = '123456a';
     _obscureText = false;
   }

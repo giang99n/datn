@@ -9,6 +9,6 @@ abstract class LivingRoomEvents extends Equatable {
 class StartEvent extends LivingRoomEvents {}
 
 class LivingRoomEventStated extends LivingRoomEvents {
-  // final String token;
-  // ProfileEventStated({required this.token});
+  final String time;
+  LivingRoomEventStated({required this.time});
 }

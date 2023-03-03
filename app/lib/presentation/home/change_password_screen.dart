@@ -104,7 +104,6 @@ class _BodyChangePasswordState extends State<BodyChangePassword> {
               key: _formkey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-
                 children: [
                   SizedBox(
                     height: size.height * 0.08,
@@ -112,10 +111,10 @@ class _BodyChangePasswordState extends State<BodyChangePassword> {
                   Text(
                     'Change password',
                     style: Theme.of(context).textTheme.caption!.copyWith(
-                      color: Colors.blue,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                          color: Colors.blue,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   SizedBox(
                     height: size.height * 0.08,
@@ -231,7 +230,9 @@ class _BodyChangePasswordState extends State<BodyChangePassword> {
                               const BorderRadius.all(Radius.circular(6))),
                     ),
                   ),
-                  SizedBox(height: 64,),
+                  SizedBox(
+                    height: 64,
+                  ),
                   SizedBox(
                     width: size.width,
                     child: ClipRRect(
@@ -272,8 +273,8 @@ class _BodyChangePasswordState extends State<BodyChangePassword> {
       ),
     );
   }
-  showAlertDialog(BuildContext context) {
 
+  showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = TextButton(
       child: Text("OK"),

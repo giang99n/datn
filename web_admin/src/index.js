@@ -1,20 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import reportWebVitals from './reportWebVitals'
+import reportWebVitals from './reportWebVitals';
 
-import { createStore } from 'redux'
+import { createStore } from 'redux';
 
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 
-import rootReducer from './redux/reducers'
+import rootReducer from './redux/reducers';
 
-import './assets/boxicons-2.0.7/css/boxicons.min.css'
-import './assets/css/grid.css'
-import './assets/css/theme.css'
-import './assets/css/index.css'
-import './assets/css/login.css'
+import './assets/boxicons-2.0.7/css/boxicons.min.css';
+import './assets/css/grid.css';
+import './assets/css/index.css';
+import './assets/css/login.css';
+import './assets/css/theme.css';
 
-import Layout from './components/layout/Layout'
+import App from './App';
 
 const store = createStore(
   rootReducer
@@ -25,7 +25,7 @@ document.title = 'Smart home'
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
-      <Layout />
+      <App />
     </React.StrictMode>
   </Provider>,
   document.getElementById('root')

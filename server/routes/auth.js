@@ -29,7 +29,16 @@ router.post('/register', async (req, res) => {
         password: hashedPassword,
         role: req.body.role,
         location: req.body.location,
-        phone:req.body.phone
+        address: req.body.address,
+        phone: req.body.phone,
+        district: req.body.district,
+        city: req.body.city,
+        ward:req.body.ward,
+        districtId: req.body.districtId,
+        cityId: req.body.cityId,
+        wardId:req.body.wardId,
+        supporterId: '',
+        supporterName:''
     });
     try {
         const savedUser = await user.save();
@@ -66,6 +75,7 @@ router.post('/login', async (req, res) => {
         name: user.name,
         email: user.email,
         location: user.location,
+        address: user.address,
         phone: user.phone,
     } });
 });

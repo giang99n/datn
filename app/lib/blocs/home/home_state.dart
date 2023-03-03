@@ -13,10 +13,10 @@ class HomeLoadingState extends HomeState {}
 class HomeErrorState extends HomeState {}
 
 class HomeLoadedState extends HomeState {
-  final SensorsResponse sensorsResponse;
-
-  HomeLoadedState({required this.sensorsResponse});
-
-  @override
-  List<Object> get props => [sensorsResponse];
+  // final SensorsResponse sensorsResponse;
+  //
+  // HomeLoadedState({required this.sensorsResponse});
+  //
+  // @override
+  // List<Object> get props => [sensorsResponse];
 }

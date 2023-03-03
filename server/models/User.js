@@ -19,9 +19,50 @@ const userSchema = new mongoose.Schema({
 		max: 255,
 		min: 6,
 	},
+	address: {
+		type: String,
+		max: 255,
+		min: 6,
+	},
+	city: {
+		type: String,
+		required: true,
+		max: 255,
+	},
+	district: {
+		type: String,
+		required: true,
+		max: 255,
+	},
+	ward: {
+		type: String,
+		required: true,
+		max: 255,
+	},
+	cityId: {
+		type: String,
+		required: true,
+		max: 255,
+	},
+	districtId: {
+		type: String,
+		required: true,
+		max: 255,
+	},
+	wardId: {
+		type: String,
+		required: true,
+		max: 255,
+	},
 	phone: {
 		type: String,
 		required: true,
+	},
+	supporterId: {
+		type: String,
+	},
+	supporterName: {
+		type: String,
 	},
 	password: {
 		type: String,
@@ -31,7 +72,7 @@ const userSchema = new mongoose.Schema({
 	},
 	role: {
 		type: String,
-		enum: ['admin', 'customer'],
+		enum: ['admin', 'customer', 'support'],
 		default: 'customer',
 	},
 	createdDate: {

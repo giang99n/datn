@@ -19,3 +19,13 @@ class GetDeviceLoadedState extends DeviceState {
   @override
   List<Object> get props => [listDevice];
 }
+
+class DeviceReportLoadingState extends DeviceState {}
+
+class DeviceReportSuccessState extends DeviceState {}
+
+class DeviceReportErrorState extends DeviceState {
+  final String message;
+
+  DeviceReportErrorState({required this.message});
+}

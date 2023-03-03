@@ -1,4 +1,4 @@
-
+#include <MQ2.h> 
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 #include <PubSubClient.h>
@@ -15,8 +15,8 @@ WiFiUDP ntpUDP;
 //NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
 
 // Thông tin về MQTT Broker
-#define mqtt_server "broker.mqttdashboard.com" // Địa chỉ server
-#define mqtt_topic_pub "demo"   //Tạo topic tên là demo
+#define mqtt_server "broker.hivemq.com" // Địa chỉ server
+#define mqtt_topic_pub "demo1"   //Tạo topic tên là demo//Thực tế tên topic ứng với ID khách hàng
 
 const uint16_t mqtt_port = 1883; //Port của CloudMQTT
 //const int D0 = 16;
@@ -29,16 +29,21 @@ const uint16_t mqtt_port = 1883; //Port của CloudMQTT
 //const int D7 = 13;
 //const int D8 = 15;
 
+int pinAout = A0; // pin A0 of NodeMcu is connected to pin A0 of MQ-2
+float  LPG, Co, Smoke; // Variable values of lpg, CO-gas, and Smoke
+  
+MQ2 mq2(pinAout);
+
 //Khai báo chân của cảm biến nhiệt độ
 const int DHTTYPE = DHT11;
 const int DHTPIN = 5;
 
 const int lamp1 = 4;
 int infrareStatus = 0;
-int statusLamp1 = 0, timerLamp1 = 0, checkLamp1 = 0;
-int statusLamp2 = 0, checkLamp2 = 0;
-int statusPan = 0, timerPan = 0, checkPan = 0;
-int statusLock = 0, checkLock = 0;
+int lights1 = 0, timerLights1 = 0, checkLights1 = 0;
+int lights2 = 0, checkLights2 = 0;
+int lights4 = 0, timerLights4 = 0, checkLights4 = 0;
+int lights3 = 0, checkLights3 = 0;
 long startLamp1, startPan; 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -54,6 +59,7 @@ void setup() {
   //set up wifi
   setup_wifi();
   //set up sensor
+  pinMode(pinAout,INPUT);
   pinMode(16, INPUT_PULLUP); // Đặt chân D0 để làm cổng đọc digital
   pinMode(12, INPUT);
   pinMode(4, OUTPUT); //Đặt chân D2 ở chế độ output
@@ -61,7 +67,9 @@ void setup() {
   pinMode(2, OUTPUT);
   pinMode(14, OUTPUT);
   pinMode(15, OUTPUT);
+  pinMode(13, OUTPUT);
   dht.begin();
+  mq2.begin();
 //  timeClient.begin();
   //set up pubsub
  
@@ -90,20 +98,17 @@ void setup_wifi() {
 
 // Hàm call back để nhận dữ liệu.
 void callback(char* topic, byte* payload, unsigned int length) {
-  if (strcmp(topic, "lights1") == 0) {
+  if (strcmp(topic, "lights1") == 0) {// Trong thực tế "lights1 sẽ được thay thế bằng ID của thiết bị", tương tự với lighs2,3,4,...
     char messing[200];
     for (int i = 0; i < length; i++) {
       messing[i] = (char)payload[i];
-   
     }
      Serial.println(messing);
     StaticJsonBuffer<200> subscribes;
     JsonObject& root = subscribes.parseObject(messing);
     const char* status = root["Status"];
-    statusLamp1 = int(status[0] - 48);
-     Serial.print("statusLamp1:");
-     Serial.println(statusLamp1);
-    digitalWrite(4, statusLamp1);//D2=4
+    lights1 = int(status[0] - 48);
+    digitalWrite(4, lights1);//D2=4
     
   } else if (strcmp(topic, "lights2") == 0) {
     char messing[200];
@@ -113,9 +118,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
     StaticJsonBuffer<200> subscribes;
     JsonObject& root = subscribes.parseObject(messing);
     const char* status = root["Status"];
-    statusLamp2 = int(status[0] - 48);
-    Serial.println(statusLamp2);
-    digitalWrite(0, statusLamp2);//D3=0
+    lights2 = int(status[0] - 48);
+    Serial.println(lights2);
+    digitalWrite(0, lights2);//D3=0
   } else if (strcmp(topic, "lights3") == 0) {
     char messing[200];
     for (int i = 0; i < length; i++) {
@@ -125,9 +130,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
     StaticJsonBuffer<200> subscribes;
     JsonObject& root = subscribes.parseObject(messing);
     const char* status = root["Status"];
-    statusLock = int(status[0] - 48);
-    Serial.println(statusLock);
-    digitalWrite(2, statusLock);//D4=2
+    lights3 = int(status[0] - 48);
+    Serial.println(lights3);
+    digitalWrite(2, lights3);//D4=2
   } else if (strcmp(topic, "lights4") == 0) {
     char messing[200];
     for (int i = 0; i < length; i++) {
@@ -137,11 +142,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
     StaticJsonBuffer<200> subscribes;
     JsonObject& root = subscribes.parseObject(messing);
     const char* status = root["Status"];
-    statusPan = int(status[0] - 48);
-    Serial.println(statusPan);
-     digitalWrite(14, statusPan);//D5=14
-//    checkPan = 1;
-//    startPan = millis();
+    lights4 = int(status[0] - 48);
+    Serial.println(lights4);
+     digitalWrite(14, lights4);//D5=14
   }
 }
 
@@ -159,7 +162,7 @@ void reconnect() {
       // Khi kết nối sẽ publish thông báo
       client.publish(mqtt_topic_pub, "ESP_reconnected");
       client.subscribe(mqtt_topic_pub);
-      client.subscribe("lights1");
+      client.subscribe("lights1");// Trong thực tế, các topic này sẽ tương ứng với ID của thiết bị
       client.subscribe("lights2");
       client.subscribe("lights3");
       client.subscribe("lights4");
@@ -189,11 +192,21 @@ void loop() {
 //    }
 
     
-  if (now - lastMsg > 1000) {
+  if (now - lastMsg > 5000) {
     Serial.println(digitalRead(12));
 //     if (digitalRead(12) == 1)
 //        Serial.println("Toi");
 //     else Serial.println("Sang");
+
+    float* values= mq2.read(true); 
+    int n = analogRead(A0);
+    if(n>600){
+     digitalWrite(15, 1);//D8=15 // Đèn cảnh báo
+     digitalWrite(13, 1);//D7=13 // Quạt thông gió
+    }else{
+      digitalWrite(15, 0);//D8=15
+      digitalWrite(13, 0);//D7=13
+    }
 
     
     //đọc nhiệt độ, độ ẩm
@@ -205,6 +218,7 @@ void loop() {
     JsonObject& JSONencoder = JSONbuffer.createObject();
     JSONencoder["humidityAir"] = h;
     JSONencoder["temperature"] = t;
+    JSONencoder["gasVal"] = n;
 
     char JSONmessageBuffer[100];
     JSONencoder.printTo(JSONmessageBuffer, sizeof(JSONmessageBuffer));

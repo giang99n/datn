@@ -92,6 +92,31 @@ class RestClient {
     }
   }
 
+  Future<dynamic> patch(
+      String uri, {
+        dynamic data,
+        Map<String, dynamic>? queryParameters,
+        Options? options,
+        CancelToken? cancelToken,
+        ProgressCallback? onSendProgress,
+        ProgressCallback? onReceiveProgress,
+      }) async {
+    try {
+      final response = await _dio.patch(
+        uri,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+      );
+      return response;
+    } on Exception {
+      rethrow;
+    }
+  }
+
   // Delete:--------------------------------------------------------------------
   Future<dynamic> delete(
     String uri, {

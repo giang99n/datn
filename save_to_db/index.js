@@ -17,17 +17,6 @@ const client = mqtt.connect(options);
 //setup the callbacks
 client.on('connect', function () {
     console.log('Connected');
-    // client.subscribe('demo', function (err) {
-    //     if (!err) {
-	// 		console.log('Subcribing to MQTT Broker!');
-	// 	}
-	// });
-	
-    // client.subscribe('test', function (err) {
-    //     if (!err) {
-	// 		console.log('Subcribing to MQTT Broker!');
-	// 	}
-	// });
 	client.subscribe('giang173078', function (err) {
         if (!err) {
 			console.log('Subcribing to MQTT Broker!');

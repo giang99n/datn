@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iot_demo/blocs/get_infor/device_bloc.dart';
 import 'package:iot_demo/blocs/profile/profile_bloc.dart';
 import 'package:iot_demo/configs/colors.dart';
+import 'package:iot_demo/presentation/home/device_report_screen.dart';
 import 'package:iot_demo/utils/app_button.dart';
 
 import '../../datasource/models/devices_res.dart';
@@ -33,11 +34,18 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   ProFileBloc? profileBloc;
-  Api? api;
+  Api api = Api();
+  TextEditingController note = TextEditingController();
+  String noteDevice = '';
 
   @override
   void initState() {
     super.initState();
+  }
+
+  void reportDevice(String id, String note) {
+    var result = api.updateDevice(id, note);
+    print(result);
   }
 
   @override
@@ -135,8 +143,9 @@ class _BodyState extends State<Body> {
                                   padding:
                                       const EdgeInsets.fromLTRB(10, 15, 0, 5),
                                   child: Text(
-                                    "Số thiết bị: 1" +
-                                        devices!.length.toString(),
+                                    "Số thiết bị: " +
+                                        state.listDevice.devices!.length
+                                            .toString(),
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -157,88 +166,152 @@ class _BodyState extends State<Body> {
               ),
               SizedBox(
                 height: 650,
-                child: ListView.builder(
-                  itemCount: deviceDemo.length,
-                  itemBuilder: (context, position) {
-                    return Card(
-                      borderOnForeground: true,
-                      color: ColorConstants.borderInput,
-                      child: Container(
-                        padding: const EdgeInsets.all(15.0),
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                child: BlocBuilder<DeviceBloc, DeviceState>(
+                    builder: (context, state) {
+                  if (state is DeviceLoadingState) {
+                    return Container(
+                        alignment: Alignment.topCenter,
+                        height: size.height * 0.18,
+                        child: const CircularProgressIndicator());
+                  } else if (state is GetDeviceLoadedState) {
+                    List<Devices> devices = [];
+                    devices.addAll(state.listDevice.devices ?? []);
+                    //devices.addAll(deviceDemo);
+                    return ListView.builder(
+                      itemCount: devices.length,
+                      itemBuilder: (context, position) {
+                        return Card(
+                          borderOnForeground: true,
+                          color: ColorConstants.borderInput,
+                          child: Container(
+                            padding: const EdgeInsets.all(15.0),
+                            margin: EdgeInsets.symmetric(vertical: 5),
+                            child: Row(
                               children: [
-                                Text(
-                                  "Tên thiết bị:  "+ deviceDemo[position].name! ,
-                                  style: const TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                Text(
-                                  deviceDemo[position].description ?? '',
-                                  style: const TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                Text(
-                                  deviceDemo[position].note ?? '',
-                                  style: const TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                Text(
-                                  "Ngày lắp đặt:  "+ deviceDemo[position].installationDate! ,
-                                  style: const TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(width: 120,),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          margin: EdgeInsets.only(top: 10),
-                                          padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
-
-                                          height: size.height * 0.06,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            color: Colors.redAccent.shade100.withOpacity(0.5),
-                                            border:
-                                            Border.all(color: Colors.redAccent, width: 1.2),
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child:Text('Báo hỏng và yêu cầu sửa chữa',style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15,
-                                          ),),
-                                        ),
+                                    Text(
+                                      "Tên thiết bị:  " +
+                                          devices[position].name!,
+                                      style: const TextStyle(
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 15,
                                       ),
                                     ),
+                                    Text(
+                                      devices[position].description ?? '',
+                                      style: const TextStyle(
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    Text(
+                                      devices[position].note ?? '',
+                                      style: const TextStyle(
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    Text(
+                                      "Ngày lắp đặt:  " +
+                                          devices[position].installationDate!,
+                                      style: const TextStyle(
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Container(
+                                          width: 120,
+                                        ),
+                                        devices[position].statusRequest == true
+                                            ? Align(
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              DeviceReportScreen(
+                                                                  device: devices[
+                                                                      position])),
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 10),
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(5, 0, 5, 5),
+                                                    height: size.height * 0.06,
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors
+                                                          .redAccent.shade100
+                                                          .withOpacity(0.5),
+                                                      border: Border.all(
+                                                          color:
+                                                              Colors.redAccent,
+                                                          width: 1.2),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                    child: Text(
+                                                      'Báo hỏng và yêu cầu hỗ trợ',
+                                                      style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            : Container(
+                                                margin:
+                                                    EdgeInsets.only(top: 10),
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        5, 0, 5, 5),
+                                                height: size.height * 0.06,
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  color: Colors
+                                                      .greenAccent.shade100,
+                                                  border: Border.all(
+                                                      color: Colors.greenAccent,
+                                                      width: 1.2),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: Text(
+                                                  ' Đang chờ sửa chữa ',
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                      ],
+                                    )
                                   ],
-                                )
+                                ),
                               ],
                             ),
-
-
-
-                          ],
-                        ),
-                      ),
+                          ),
+                        );
+                      },
                     );
-                  },
-                ),
+                  } else {
+                    return Container();
+                  }
+                }),
               ),
               const SizedBox(
                 height: 64,

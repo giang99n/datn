@@ -29,6 +29,9 @@ class Devices {
   String? description;
   String? installationDate;
   String? note;
+  String? room;
+  bool? statusRequest;
+  bool? isControl;
   int? iV;
 
   Devices(
@@ -39,6 +42,9 @@ class Devices {
         this.description,
         this.installationDate,
         this.note,
+        this.room,
+        this.statusRequest,
+        this.isControl,
         this.iV});
 
   Devices.fromJson(Map<String, dynamic> json) {
@@ -49,6 +55,9 @@ class Devices {
     description = json['description'];
     installationDate = json['installationDate'];
     note = json['note'];
+    room = json['room'];
+    statusRequest = json['statusRequest'];
+    isControl = json['isControl'];
     iV = json['__v'];
   }
 
@@ -61,7 +70,16 @@ class Devices {
     data['description'] = this.description;
     data['installationDate'] = this.installationDate;
     data['note'] = this.note;
+    data['room'] = this.room;
+    data['statusRequest'] = this.statusRequest;
+    data['isControl'] = this.isControl;
     data['__v'] = this.iV;
     return data;
   }
+}
+
+class DeviceStatus extends Devices{
+   bool? statusControl;
+
+  DeviceStatus({this.statusControl});
 }
