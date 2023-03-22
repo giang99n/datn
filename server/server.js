@@ -10,9 +10,6 @@ const Sensor = require('./models/Sensor');
 
 const mqtt = require('mqtt')
 
-const accountSid = "ACf7576834793c6a73350507af5fc4c341";
-const authToken = "9d5fb086575622a24f62296b6a436de5";
-const clientsms = require("twilio")(accountSid, authToken);
 
 
 
@@ -36,7 +33,7 @@ client.on('error', function (error) {
 
 
 //Connect to mongodb database
-mongoose.connect('mongodb+srv://admin:aloalo123@cluster0.ex56l.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+mongoose.connect(', {
 	useUnifiedTopology: true,
 	useNewUrlParser: true,
 });
@@ -49,11 +46,7 @@ db.once('open', () => {
 			let content = JSON.parse(message.toString());
 			console.log("content" + content);
 
-			if(content.gasVal>600){
-				clientsms.messages
-  					.create({ body: "Phat hien khi gas, hay kiem tra", from: "+13156108151", to: "+84868349331" })
-  					.then(message => console.log(message.sid));
-			}
+		
 
 			//Save to db
 			//Create a new Sensor
